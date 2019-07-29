@@ -4,3 +4,5 @@
 
 /.vs/ThatConference2019.Fn/v16
 /.vs
+/ThatConference.Fn.Tests/bin/Debug/netcoreapp2.2
+/ThatConference.Fn.Tests/obj
