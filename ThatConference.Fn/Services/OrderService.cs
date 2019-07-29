@@ -28,7 +28,7 @@ namespace ThatConference.Fn.Services
         #region Public Methods
         public async Task SubmitOrderAsync(SubmitOrderRequest req)
         {
-            _logger.LogInformation($"Submitting Order #{req.OrderId}");
+            _logger.LogInformation($"Submitting Order");
         }
         #endregion
     }
