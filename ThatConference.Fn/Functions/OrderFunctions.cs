@@ -29,10 +29,11 @@ namespace ThatConference.Fn
 
         [FunctionName("SubmitOrder")]
         public async Task<IActionResult> SubmitOrderAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "order")]SubmitOrderRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "order")]SubmitOrderRequest req)
         {
             await _orderService.SubmitOrderAsync(req);
-            return new AcceptedResult();
+            
+            return new UnauthorizedResult();
         }
         #endregion
 
