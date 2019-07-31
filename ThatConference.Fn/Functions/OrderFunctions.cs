@@ -37,5 +37,16 @@ namespace ThatConference.Fn
         }
         #endregion
 
+        #region Get Order
+        [FunctionName("GetOrder")]
+        public async Task<IActionResult> GetOrderAsync(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "order/{orderId}")]GetOrderRequest req)
+        {
+            var order = await _orderService.GetOrderAsync(req);
+
+            return new OkObjectResult(order);
+        }
+        #endregion
+
     }
 }

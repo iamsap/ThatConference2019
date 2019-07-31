@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.Extensions.Logging;
+using ThatConference.Fn.Models;
 using ThatConference.Fn.Models.Request;
 using ThatConference.Fn.Models.Response;
 using ThatConference.Fn.Repositories;
@@ -30,6 +32,17 @@ namespace ThatConference.Fn.Services
         {
             _logger.LogInformation($"Submitting Order");
         }
+
+        public async Task<Order> GetOrderAsync(GetOrderRequest req)
+        {
+            var random = new Random();
+            var sleep = random.Next(300, 1000);
+
+            await Task.Delay(sleep);
+
+            return new Order();
+        }
+
         #endregion
     }
 }
