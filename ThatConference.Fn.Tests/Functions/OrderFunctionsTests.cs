@@ -1,7 +1,13 @@
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using ThatConference.Fn.Models.Request;
 using ThatConference.Fn.Services;
 
@@ -26,9 +32,11 @@ namespace ThatConference.Fn.Tests.Functions
         public async Task Calls_SubmitOrderAsync()
         {
             // Arrange
-            var req = new SubmitOrderRequest();
+            var msg = new HttpRequestMessage(HttpMethod.Post, "api/order");
+            msg.Headers.Add("Authorization", new List<string>() { "Basic" });
+            msg.Content = new StringContent(JsonConvert.SerializeObject(new SubmitOrderRequest()), Encoding.UTF8, "application/json");
             // Act
-            var res = await _orderFunctions.SubmitOrderAsync(req);
+            var res = await _orderFunctions.SubmitOrderAsync(msg);
             // Assert
             _orderService.Verify(m => m.SubmitOrderAsync(It.IsAny<SubmitOrderRequest>()), Times.Once);
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -29,11 +30,13 @@ namespace ThatConference.Fn
 
         [FunctionName("SubmitOrder")]
         public async Task<IActionResult> SubmitOrderAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "order")]SubmitOrderRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "order")]HttpRequestMessage message)
         {
-            await _orderService.SubmitOrderAsync(req);
-            
-            return new UnauthorizedResult();
+            if(!message.Headers.Contains("Authorization"))
+                return new UnauthorizedResult();
+
+            await _orderService.SubmitOrderAsync(await message.Content.ReadAsAsync<SubmitOrderRequest>());
+            return new AcceptedResult();
         }
         #endregion
 

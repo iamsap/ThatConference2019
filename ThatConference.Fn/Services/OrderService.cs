@@ -30,17 +30,18 @@ namespace ThatConference.Fn.Services
         #region Public Methods
         public async Task SubmitOrderAsync(SubmitOrderRequest req)
         {
-            _logger.LogInformation($"Submitting Order");
+            if (req == null)
+            {
+                throw new ArgumentNullException(nameof(req));
+            }
+
+            await _orderRepository.SaveAsync(req.ToOrder());
         }
 
         public async Task<Order> GetOrderAsync(GetOrderRequest req)
         {
-            var random = new Random();
-            var sleep = random.Next(300, 1000);
-
-            await Task.Delay(sleep);
-
-            return new Order();
+            var order = await _orderRepository.GetOrderByIdAsync(req.OrderId);
+            return order;
         }
 
         #endregion
