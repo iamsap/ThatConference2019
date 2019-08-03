@@ -4,6 +4,8 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ThatConference.Fn.Models;
+using ThatConference.Fn.Models.Request;
 using ThatConference.Fn.Repositories;
 using ThatConference.Fn.Services;
 
@@ -25,11 +27,12 @@ namespace ThatConference.Fn.Tests.Services
         }
 
         [TestMethod]
-        public async Task Handles_Null_Req()
+        public async Task Handles_Null_Order()
         {
             // Arrange
+            _orderRepository.Setup(m => m.GetOrderByIdAsync(It.IsAny<int>())).ReturnsAsync((Order)null);
             // Act
-            Func<Task> func = async() => await _orderService.SubmitOrderAsync(null);
+            Func<Task> func = async() => await _orderService.GetOrderAsync(new GetOrderRequest());
             // Assert
             func.Should().NotThrow<NullReferenceException>();
         }
